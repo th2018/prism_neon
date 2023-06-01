@@ -40,13 +40,17 @@ plot(prism$Date,prism$ppt..mm.)
 
 ```{r}
 df_niwot_daily_2021<-df_niwot_daily[df_niwot_daily$date>= as.POSIXct("2021-10-01" , format="%Y-%m-%d") & df_niwot_daily$date<= as.POSIXct("2022-06-30" , format="%Y-%m-%d") ,]
-plot(df_niwot_daily_2021$date,df_niwot_daily_2021$Precip,ylab="Daily Precip Bulk (millimeter)",main="Niwot",xlab="",tyle="l",ylim = c(0, 40 ))
+plot(df_niwot_daily_2021$date,df_niwot_daily_2021$Precip,ylab="Daily Precip Bulk (millimeter)",main="Niwot (start in Oct 2021)",xlab="",tyle="l",ylim = c(0, 40 ))
 par(new=T)
 
 prism2021<-prism[prism$Date>= as.POSIXct("2021-10-01" , format="%Y-%m-%d") & prism$Date<=as.POSIXct("2022-06-30" , format="%Y-%m-%d") ,]
-  
- 
 
 plot(prism2021$Date,prism2021$ppt..mm.,col="dodgerblue" ,ylim = c(0, 40 ),ylab="",xlab="")
+
+legend(x = "topleft"
+       , 
+       legend=c("PRISM", "NEON"), 
+       fill = c("dodgerblue","black"))
+
 ```
 
