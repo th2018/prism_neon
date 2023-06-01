@@ -1,0 +1,52 @@
+---
+title: "neon_prism"
+output: html_document
+---
+
+```{r}
+load("df_niwot.Rdata")
+
+df_niwot
+     
+```
+
+```{r}
+library(dplyr)
+
+df_niwot_daily<-
+df_niwot %>%
+  group_by(date) %>%
+  summarise(Precip = sum(priPrecipBulk))
+df_niwot_daily
+```
+
+```{r}
+plot(df_niwot_daily$date,df_niwot_daily$Precip,ylab="Daily Precip Bulk (millimeter)",main="Niwot",xlab="")
+```
+
+```{r}
+prism<-read.csv("PRISM_ppt_stable_4km_20211001_20220930_40.0543_-105.5824.csv",skip = 10)
+prism
+```
+
+```{r}
+prism$Date<-as.POSIXct(prism$Date, format="%Y-%m-%d")
+save(prism,file="niwot_prism.Rdata")
+```
+
+```{r}
+plot(prism$Date,prism$ppt..mm.)
+```
+
+```{r}
+df_niwot_daily_2021<-df_niwot_daily[df_niwot_daily$date>= as.POSIXct("2021-10-01" , format="%Y-%m-%d") & df_niwot_daily$date<= as.POSIXct("2022-06-30" , format="%Y-%m-%d") ,]
+plot(df_niwot_daily_2021$date,df_niwot_daily_2021$Precip,ylab="Daily Precip Bulk (millimeter)",main="Niwot",xlab="",tyle="l",ylim = c(0, 40 ))
+par(new=T)
+
+prism2021<-prism[prism$Date>= as.POSIXct("2021-10-01" , format="%Y-%m-%d") & prism$Date<=as.POSIXct("2022-06-30" , format="%Y-%m-%d") ,]
+  
+ 
+
+plot(prism2021$Date,prism2021$ppt..mm.,col="dodgerblue" ,ylim = c(0, 40 ),ylab="",xlab="")
+```
+
