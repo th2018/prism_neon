@@ -1,0 +1,72 @@
+---
+title: '#install.packages("neonUtilities")  library(neonUtilities)'
+output: html_document
+---
+
+```{r}
+#install.packages("neonUtilities") 
+library(neonUtilities)
+library("utils")
+```
+
+#The identifier of the NEON data product: https://data.neonscience.org/data-products/explore
+```{r}
+getwd()
+zipsByProduct(dpID="DP1.00006.001" # Precipitation
+              , site="NIWO", startdate = "2020-10", enddate =  "2021-10",
+  package = "basic", avg = "all", check.size = TRUE, savepath = NA,
+  load = F)
+```
+
+```{r}
+list.files()
+```
+
+```{r}
+setwd("filesToStack00006")
+list.files()
+```
+
+```{r}
+for (file in list.files()) {
+  unzip(file)
+}
+list.files()
+```
+
+```{r}
+setwd("/Users/owner/Downloads/prism_r-main 2/filesToStack00006")
+
+csv<-list.files( )
+
+csv_5min<-csv[grepl(  "PRIPRE_5min",  csv , fixed = TRUE)]
+
+df0<-data.frame(startDateTime="1234-06-01T00:00:00Z",
+endDateTime="1234-06-01T00:00:00Z",priPrecipBulk=-0.9999,priPrecipExpUncert=1234.5678,priPrecipFinalQF=1234
+)
+
+for (csv_file in csv_5min) {
+  df<-read.csv(csv_file)
+  df0<-rbind(df0,df)
+}
+  
+df0<-df0[-1,]
+df0
+```
+
+```{r}
+df0$date<-substr(df0$startDateTime,1,10)
+#plot(df0$priPrecipBulk)
+#millimeter
+df0$date<-as.POSIXct(df0$date,format="%Y-%m-%d")
+```
+
+```{r}
+plot(df0$date,df0$priPrecipBulk)
+```
+
+```{r}
+df_niwot<-df0
+save(df_niwot,file="df_niwot.Rdata")
+```
+
