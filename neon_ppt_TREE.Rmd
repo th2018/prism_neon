@@ -1,0 +1,76 @@
+---
+title: ' neonUtilities '
+output: html_document
+---
+
+```{r}
+#install.packages("neonUtilities") 
+library(neonUtilities)
+library("utils")
+```
+
+#The identifier of the NEON data product: https://data.neonscience.org/data-products/explore
+```{r}
+getwd()
+zipsByProduct(dpID="DP1.00006.001" # Precipitation
+              , site="TREE", startdate = "2021-01", enddate =  "2021-12",
+  package = "basic", avg = "all", check.size = TRUE, savepath = NA,
+  load = T)
+```
+
+```{r}
+list.files()
+```
+
+```{r}
+setwd("filesToStack00006")
+list.files()
+```
+
+```{r}
+setwd("filesToStack00006")
+for (file in list.files()) {
+  unzip(file)
+}
+list.files()
+```
+
+```{r}
+#setwd("/Users/owner/Downloads/prism_r-main 2/filesToStack00006")
+setwd("filesToStack00006")
+
+csv<-list.files( )
+
+csv_5min<-csv[grepl(  "THRPRE_1min",  csv , fixed = TRUE)]
+
+#df0<-data.frame(startDateTime="1234-06-01T00:00:00Z",endDateTime="1234-06-01T00:00:00Z",priPrecipBulk=-0.9999,priPrecipExpUncert=1234.5678,priPrecipFinalQF=1234)
+
+df0<-data.frame(startDateTime="1234-06-01T00:00:00Z",endDateTime="1234-06-01T00:00:00Z", TFPrecipBulk=-0.9999, TFPrecipExpUncert=1234.5678, TFPrecipRangeQF=1234, TFPrecipSciRvwQF= FALSE)
+
+for (csv_file in csv_5min) {
+  df<-read.csv(csv_file)
+  df0<-rbind(df0,df)
+}
+  
+df0<-df0[-1,]
+df0
+```
+
+```{r}
+df0$date<-substr(df0$startDateTime,1,10)
+#plot(df0$priPrecipBulk)
+#millimeter
+df0$date<-as.POSIXct(df0$date,format="%Y-%m-%d")
+head(df0)
+```
+
+```{r}
+plot(df0$date, df0$TFPrecipBulk)
+#plot(df0$date,df0$priPrecipBulk)
+```
+
+```{r}
+df_TREE<-df0
+save(df_TREE,file="df_TREE.Rdata")
+```
+
