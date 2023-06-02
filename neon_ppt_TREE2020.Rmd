@@ -29,7 +29,7 @@ list.files()
 
 ```{r}
 getwd()
-#setwd("filesToStack00006")
+setwd("filesToStack00006")
 for (file in list.files()) {
   unzip(file)
 }
@@ -72,6 +72,6 @@ plot(df0$date, df0$TFPrecipBulk)
 
 ```{r}
 df_TREE<-df0
-save(df_TREE,file="df_TREE.Rdata")
+save(df_TREE,file="df_TREE_2020.Rdata")
 ```
 
