@@ -40,7 +40,7 @@ legend(x = "topleft"       ,        legend=c("PRISM", "NEON"),        fill = c("
 ```
 
 ```{r}
-plot(df_TREE_daily$Precip,prism$ppt..mm.,xlim=c(0,90),ylim=c(0,90),xlab = "NEON",ylab="PRISM")
+plot(df_TREE_daily$Precip,prism$ppt..mm.,xlim=c(0,90),ylim=c(0,90),xlab = "NEON",ylab="PRISM", main = "TREE")
 par(new=T)
 plot(seq(-100:100), seq(-100:100), type="l",xlim=c(0,90),ylim=c(0,90), xlab = " ",ylab=" ")
 ```
